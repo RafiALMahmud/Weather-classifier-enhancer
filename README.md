@@ -1,12 +1,28 @@
 # Weather Classifier Enhancer
 
+> Four-class road-scene weather classification, from model training to ONNX inference.
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white) ![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white) ![ONNX](https://img.shields.io/badge/ONNX-005CED?style=flat-square&logo=onnx&logoColor=white)
+
+**[GitHub repository](https://github.com/RafiALMahmud/Weather-classifier-enhancer)** · [Project explanation](PROJECT_EXPLANATION.md) · [Installation](#installation) · [Training](#training) · [Realtime inference](#realtime-inference) · [Desktop GUI](#gui-inference) · [CI notes](#github-actions-workflow)
+
+| Input | Classification | Outputs and interfaces |
+|---|---|---|
+| Road-scene images | Rainy, foggy, sand and snow | TorchScript, ONNX and quantized ONNX exports |
+| Webcam or video | Frame-level inference | Realtime inference pipeline |
+| An uploaded image | Class predictions and confidence scores | Tkinter desktop GUI |
+
+**Project format:** a local training and desktop-inference workflow. Datasets and a trained model are required for the relevant commands below; no hosted web demo is listed here.
+
+---
+
 A 4-class adverse weather classification project built for training and fast inference on **rainy, foggy, sand, and snow** conditions.
 
 This repository contains:
 - a full training + evaluation + export pipeline
 - realtime ONNX inference support
 - a desktop GUI for single-image prediction
-- a GitHub Actions workflow for basic CI validation
+- a GitHub Actions workflow and a separate syntax-check example
 - SSH setup notes for pushing this repo from your own machine
 
 ## Project overview
@@ -23,9 +39,10 @@ The model uses **MobileNetV3-Small** as a lightweight backbone so the exported O
 Weather-classifier-enhancer/
 ├── .github/
 │   └── workflows/
-│       └── python-ci.yml
+│       └── python-publish.yml
 ├── weather_classifier_complete.py
 ├── weather_inference_gui.py
+├── python-ci.yml                  # root-level syntax-check example
 ├── requirements.txt
 ├── .gitignore
 ├── PROJECT_EXPLANATION.md
@@ -173,19 +190,16 @@ The GUI automatically looks for:
 
 ## GitHub Actions workflow
 
-This repo includes a workflow at:
+The active workflow is [`.github/workflows/python-publish.yml`](.github/workflows/python-publish.yml). It sets up Python, installs dependencies and invokes the training script with `|| true`. Script errors therefore do not fail that step; a successful workflow run is not proof of successful model training.
 
-```text
-.github/workflows/python-ci.yml
-```
+A separate [`python-ci.yml`](python-ci.yml) example is stored at the repository root. It defines:
 
-It performs:
 - repository checkout
 - Python setup
 - dependency installation
-- syntax compilation check
+- syntax compilation checks for both Python scripts
 
-This is a safe starter workflow for a research/prototype project because it validates the codebase without forcing full dataset-dependent training during CI.
+GitHub discovers workflows under `.github/workflows/`, so the root-level syntax-check example is not an active workflow in its current location. Full training still requires the datasets and configuration described above.
 
 ## Notes
 
@@ -204,5 +218,5 @@ This is a safe starter workflow for a research/prototype project because it vali
 ## Uploaded source files used
 
 The repository content here was built from the two uploaded scripts:
-- training/inference pipeline fileciteturn0file0
-- Tkinter GUI inference app fileciteturn0file1
+- [Training/inference pipeline](weather_classifier_complete.py)
+- [Tkinter GUI inference app](weather_inference_gui.py)
